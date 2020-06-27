@@ -1,0 +1,8 @@
+{:deps {borkdude/sci {:mvn/version "0.1.1-alpha.1"}}
+ :aliases
+ {:reflection {:extra-paths ["script"]
+               :extra-deps {cheshire {:mvn/version "5.10.0"}}
+               :main-opts ["-m" "generate-reflection-file"]}
+  :graal {:override-deps
+          {;; this version of clojure addresses https://clojure.atlassian.net/browse/CLJ-1472
+           org.clojure/clojure {:mvn/version "1.10.2-alpha1"}}}}}
