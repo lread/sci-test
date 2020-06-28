@@ -17,6 +17,8 @@ Baby steps.
 One of @borkdude's ideas was to compile your library and sci and clojure.test to produce
 a native image. This native-image would take, as input, your library test suite.
 
+![the idea](image/the-idea.png)
+
 ## Status
 
 Stolen enough code from rewrite-cljc and babashka to:
