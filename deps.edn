@@ -1,4 +1,9 @@
-{:deps {borkdude/sci {:mvn/version "0.1.1-alpha.1"}}
+{:paths ["src"
+         ;; not sure how this path will work out later
+         "fake-target/generated"]
+ :deps {borkdude/sci {:mvn/version "0.1.1-alpha.1"}
+        ;; temporarily add rewrite-cljc here, this will not be hardcoded later
+        rewrite-cljc {:local/root "/Users/lee/proj/oss/rewrite-cljs-playground"}}
  :aliases
  {:reflection {:extra-paths ["script"]
                :extra-deps {cheshire {:mvn/version "5.10.0"}}

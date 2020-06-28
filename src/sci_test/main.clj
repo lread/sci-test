@@ -5,6 +5,7 @@
    [babashka.impl.classpath :as cp]
    [babashka.impl.common :as common]
    [babashka.impl.test :as t]
+   [mylibrary]
    [sci.addons :as addons]
    [sci.core :as sci])
   (:gen-class))
@@ -22,8 +23,10 @@
   nil)
 
 (def namespaces
-  {'clojure.test t/clojure-test-namespace
-   'babashka.classpath {'add-classpath add-classpath*}})
+  (merge
+   {'clojure.test t/clojure-test-namespace
+    'babashka.classpath {'add-classpath add-classpath*}}
+   mylibrary/namespaces))
 
 ;; copied from babashka
 (def imports
