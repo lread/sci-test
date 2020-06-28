@@ -2,14 +2,28 @@
   {:no-doc true}
   (:require
    [babashka.impl.classes :as classes]
+   [babashka.impl.classpath :as cp]
    [babashka.impl.common :as common]
    [babashka.impl.test :as t]
    [sci.addons :as addons]
    [sci.core :as sci])
   (:gen-class))
 
+(def cp-state (atom nil))
+
+(defn add-classpath* [add-to-cp]
+  (swap! cp-state
+         (fn [{:keys [:cp]}]
+           (let [new-cp
+                 (if-not cp add-to-cp
+                         (str cp (System/getProperty "path.separator") add-to-cp))]
+             {:loader (cp/loader new-cp)
+              :cp new-cp})))
+  nil)
+
 (def namespaces
-  {'clojure.test t/clojure-test-namespace})
+  {'clojure.test t/clojure-test-namespace
+   'babashka.classpath {'add-classpath add-classpath*}})
 
 ;; copied from babashka
 (def imports
@@ -46,14 +60,19 @@
     Throwable java.lang.Throwable})
 
 (defn -main []
-  (let [opts {:namespaces namespaces
+  (let [load-fn (fn [{:keys [:namespace]}]
+                  (when-let [{:keys [:loader]} @cp-state]
+                    (cp/source-for-namespace loader namespace nil)))
+        _ (add-classpath* "./playground")
+        opts {:namespaces namespaces
               :env (atom {})
               :classes classes/class-map
-              :imports imports}
+              :imports imports
+              :load-fn load-fn}
         opts (addons/future opts)
         sci-ctx (sci/init opts)
         _ (vreset! common/ctx sci-ctx)]
-    (sci/eval-string* sci-ctx "(require '[clojure.test :as t]) (t/is (= 1 2))")))
+    (sci/eval-string* sci-ctx (slurp "playground/faddle.clj"))))
 
 (comment
   (t/is (= 1 1)))

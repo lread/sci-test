@@ -27,7 +27,6 @@ Stolen enough code from rewrite-cljc and babashka to:
 
 Next up:
 
-- load and run a test from a file
 - load and run tests from files
 - include a dummy library in native image to test against
 - update tests to hit dummy library
