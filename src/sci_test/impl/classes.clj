@@ -1,5 +1,5 @@
-;; copied from babashka, turfed features, moved reflection.json generation to script
-(ns babashka.impl.classes
+;; copied from babashka, turfed features, moved reflection.json generation to its own class
+(ns sci-test.impl.classes
   {:no-doc true})
 
 (def custom-map
@@ -102,6 +102,7 @@
           java.lang.Double
           java.lang.Exception
           java.lang.Float
+          java.lang.IndexOutOfBoundsException ;; added by Lee
           java.lang.Integer
           java.lang.Long
           java.lang.Number
@@ -161,6 +162,7 @@
     :constructors [clojure.lang.Delay
                    clojure.lang.MapEntry
                    clojure.lang.LineNumberingPushbackReader
+                   clojure.lang.PersistentHashMap ;; added by Lee for macro test, can remove
                    java.io.EOFException
                    java.io.PrintWriter
                    java.io.PushbackReader]

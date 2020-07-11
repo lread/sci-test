@@ -1,5 +1,6 @@
-(ns babashka.impl.test
-  (:require  [babashka.impl.clojure.test :as t]))
+(ns sci-test.impl.test
+  "Copied from babashka"
+  (:require  [sci-test.impl.clojure.test :as t]))
 
 (defn macrofy [v]
   (with-meta v {:sci/macro true}))
@@ -54,7 +55,3 @@
    'run-tests (contextualize t/run-tests)
    'run-all-tests (contextualize t/run-all-tests)
    'successful? t/successful?})
-
-(comment
-  (t/is (= 1 1))
-  (t/is true))

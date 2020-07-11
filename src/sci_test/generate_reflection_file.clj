@@ -1,4 +1,5 @@
-(ns generate-reflection-file
+(ns sci-test.generate-reflection-file
+  "A utility to generate native-image reflection.json file"
   (:require [babashka.impl.classes :refer [classes]]
             [cheshire.core :as json]))
 

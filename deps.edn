@@ -1,13 +1,6 @@
-{:paths ["src"
-         ;; not sure how this path will work out later
-         "fake-target/generated"]
- :deps {borkdude/sci {:mvn/version "0.1.1-alpha.1"}
-        ;; temporarily add rewrite-cljc here, this will not be hardcoded later
-        rewrite-cljc {:local/root "/Users/lee/proj/oss/rewrite-cljs-playground"}}
- :aliases
- {:reflection {:extra-paths ["script"]
-               :extra-deps {cheshire {:mvn/version "5.10.0"}}
-               :main-opts ["-m" "generate-reflection-file"]}
-  :graal {:override-deps
-          {;; this version of clojure addresses https://clojure.atlassian.net/browse/CLJ-1472
-           org.clojure/clojure {:mvn/version "1.10.2-alpha1"}}}}}
+{:paths ["src"]
+ :deps {borkdude/sci {:git/url "https://github.com/lread/sci.git"
+                      :sha "b1ab8290291e41f99fc236e76f5d6a3ba447547e"} ;; includes a fix for :line nil metadata
+        cheshire {:mvn/version "5.10.0"} ;; for reflection.json generation only - can be excluded otherwise
+        org.clojure/tools.namespace {:mvn/version "1.0.0"}
+        org.clojure/test.check {:mvn/version "1.0.0"}}}
