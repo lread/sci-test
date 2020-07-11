@@ -2,14 +2,14 @@
   "Effectively a very minimal version of babashka that supports interpreting tests."
   {:no-doc true}
   (:require
-   [babashka.impl.classes :as classes]
-   [babashka.impl.classpath :as cp]
-   [babashka.impl.clojure.core :as core :refer [core-extras]]
-   [babashka.impl.common :as common]
+   [sci-test.impl.classes :as classes]
+   [sci-test.impl.classpath :as cp]
+   [sci-test.impl.clojure.core :as core :refer [core-extras]]
+   [sci-test.impl.common :as common]
    [sci.addons :as addons]
    [sci.core :as sci]
 
-   babashka.impl.test
+   sci-test.impl.test
    sci-test.impl.test-check
    sci-test.impl.test-runner
    sci-test.impl.extras
@@ -31,7 +31,7 @@
 
 (def namespaces
   (merge
-   {'clojure.test babashka.impl.test/clojure-test-namespace
+   {'clojure.test sci-test.impl.test/clojure-test-namespace
     'clojure.core core-extras
     'babashka.classpath {'add-classpath add-classpath*}}
 

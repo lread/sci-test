@@ -232,7 +232,7 @@
    For additional event types, see the examples in the code.
 "}
     sci-test.impl.clojure.test
-  (:require [babashka.impl.common :refer [ctx]]
+  (:require [sci-test.impl.common :refer [ctx]]
             [clojure.stacktrace :as stack]
             [clojure.template :as temp]
             [sci.core :as sci]
