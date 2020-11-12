@@ -4,7 +4,7 @@
 
 I wanted to verify that rewrite-cljc functions as expected after compiled with GraalVM native-image.
 One would think that simply compiling tests with native-image would be the way to go. The reality is,
-though, that Graal's `native-image` consumes more RAM than available on free tiers of popular CI services.
+though, that Graal's `native-image` can consume more RAM than available on free tiers of popular CI services.
 
 This is an experiment to see if I can, within the RAM constraints of CircleCI or GitHub Actions,
 interpret rewrite-cljc tests over a natively compiled rewrite-cljc source (and deps).
@@ -22,7 +22,7 @@ Here's how this all currently works for rewrite-cljc:
 
 ## Status
 
-An generically named experiment that is more specific to rewrite-cljc than I'd like. I'd like to:
+A generically named experiment that is more specific to rewrite-cljc than I'd like. I'd like to:
 
 - perhaps discover `lib_under_sci.clj` instead of hardcoding a reference to this generated file
 - perhaps generalize for testing other libs?
@@ -40,7 +40,7 @@ Whether or not I use sci to test rewrite-cljc, the exercise has other benefits:
 2. learned that Clojure adds positional metadata to quoted lists
 3. learned a lot about sci, uncovered a couple of bugs therein and updated sci README with things I learned.
 4. learned what a sci exposed rewrite-cljc might look like
-5. had fun writing a ``sci_test_gen_native_image.clj` something I would have normally written in bash
+5. had fun writing a `sci_test_gen_native_image.clj` something I would have normally written in bash
 6. found a bug in my internal potemkin import-macro, perhaps the flaw also exists in potemkin master
 
 ### RAM usage
@@ -95,9 +95,9 @@ unexpectedly be coerced to rewrite-cljc meta node, as will all elements from eda
 
 Options
 
-1. REJECTED - change rewrite-cljc behavior to strip metadata when coercing. Coercing metadata in rewrite-cljc is 
-a long standing rewrite-clj behaviour and changing it would be a breaking change. One of my primary goals for 
-rewrite-cljc is to not introduce breaking changes.
+1. CHOSEN - change rewrite-cljc behavior to strip metadata when coercing. Coercing metadata in rewrite-cljc is 
+a long standing rewrite-clj behaviour and changing is a breaking change. One of my primary goals for 
+rewrite-cljc is to not introduce breaking changes, but this seems like a sensible one and I've allowed for legacy rewrite-clj behavior via a dynamic var.
 
 2. CANDIDATE - add a new coerce method to rewrite-cljc that does not coerce attached metadata. This might be an option to consider at a later date. For now I'd like to avoid adding more functions to an already crowded API.
 
@@ -130,7 +130,7 @@ or from source it is parsing? It looks like at edamame positioning data cannot b
    user=> (meta (with-meta [1 2 3] nil))
    ```
 
-5. CURRENT CHOICE - same as 4 but do the stripping of metadata the API boundary so that I don't have to modify sci. Side
+5. FORMER CHOICE - same as 4 but do the stripping of metadata the API boundary so that I don't have to modify sci. Side
 was re-adding `:line` metadata as a fixup step, I have forked sci to address, will figure out what is going on, and if 
 appropriate will submit patch to sci.
 

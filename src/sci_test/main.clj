@@ -116,7 +116,7 @@
         _ (when classpath (add-classpath* classpath))
         opts {:namespaces namespaces
               :env (atom {})
-              :features #{:bb :clj}
+              :features #{:sci-test :clj}
               :classes classes/class-map
               :imports imports
               :load-fn load-fn}
