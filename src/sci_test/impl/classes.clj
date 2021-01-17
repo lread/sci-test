@@ -116,7 +116,6 @@
           java.lang.Math
           java.lang.Object
           java.lang.Process
-          java.lang.ProcessHandle
           java.lang.ProcessBuilder
           java.lang.ProcessBuilder$Redirect
           java.lang.Runtime
@@ -220,8 +219,6 @@
            (fn [v]
              (cond (instance? java.lang.Process v)
                    java.lang.Process
-                   (instance? java.lang.ProcessHandle v)
-                   java.lang.ProcessHandle
                    ;; added for calling .put on .environment from ProcessBuilder
                    (instance? java.util.Map v)
                    java.util.Map
