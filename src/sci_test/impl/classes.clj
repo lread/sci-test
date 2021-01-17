@@ -1,4 +1,5 @@
-;; copied from babashka, turfed features, moved reflection.json generation to its own class
+;; copied from babashka, turfed features, moved reflection.json generation to its own namespace
+
 (ns sci-test.impl.classes
   {:no-doc true})
 
@@ -72,7 +73,8 @@
         {:methods [{:name "copyOf"}]}}))
 
 (def classes
-  `{:all [clojure.lang.BigInt
+  `{:all [clojure.lang.ArityException
+          clojure.lang.BigInt
           clojure.lang.ExceptionInfo
           java.io.BufferedReader
           java.io.BufferedWriter
@@ -80,6 +82,9 @@
           java.io.ByteArrayOutputStream
           java.io.Console
           java.io.File
+          java.io.FileFilter
+          java.io.FilenameFilter
+          java.io.FileNotFoundException
           java.io.InputStream
           java.io.IOException
           java.io.OutputStream
@@ -104,12 +109,14 @@
           java.lang.Float
           java.lang.IndexOutOfBoundsException ;; added by Lee
           java.lang.Integer
+          java.lang.Iterable
           java.lang.Long
           java.lang.Number
           java.lang.NumberFormatException
           java.lang.Math
           java.lang.Object
           java.lang.Process
+          java.lang.ProcessHandle
           java.lang.ProcessBuilder
           java.lang.ProcessBuilder$Redirect
           java.lang.Runtime
@@ -121,6 +128,7 @@
           java.lang.Throwable
           java.math.BigDecimal
           java.math.BigInteger
+          java.net.ConnectException
           java.net.DatagramSocket
           java.net.DatagramPacket
           java.net.HttpURLConnection
@@ -132,14 +140,15 @@
           ;; java.net.URL, see below
           java.net.URLEncoder
           java.net.URLDecoder
-
           java.security.MessageDigest
-
+          java.security.DigestInputStream
           java.util.concurrent.LinkedBlockingQueue
           java.util.jar.JarFile
           java.util.jar.JarEntry
           java.util.jar.JarFile$JarFileEntry
+          java.util.stream.Stream
           java.util.Random
+          ;; java.util.regex.Matcher
           java.util.regex.Pattern
           java.util.Base64
           java.util.Base64$Decoder
@@ -156,29 +165,44 @@
           java.util.zip.DeflaterInputStream
           java.util.zip.GZIPInputStream
           java.util.zip.GZIPOutputStream
-          ~(symbol "[B")
-
-          ]
+          java.util.zip.ZipInputStream
+          java.util.zip.ZipEntry
+          ~(symbol "[B")]
     :constructors [clojure.lang.Delay
                    clojure.lang.MapEntry
                    clojure.lang.LineNumberingPushbackReader
-                   clojure.lang.PersistentHashMap ;; added by Lee for macro test, can remove
                    java.io.EOFException
                    java.io.PrintWriter
                    java.io.PushbackReader]
+    :methods [borkdude.graal.LockFix] ;; support for locking
+
     :fields [clojure.lang.PersistentQueue]
-    :instance-checks [clojure.lang.IObj
+    :instance-checks [clojure.lang.Cons
+                      clojure.lang.Cycle
+                      clojure.lang.IObj
+                      clojure.lang.IFn
+                      clojure.lang.IPending
+                      ;; clojure.lang.IDeref
+                      ;; clojure.lang.IAtom
                       clojure.lang.IEditableCollection
                       clojure.lang.IMapEntry
+                      clojure.lang.IPersistentCollection
                       clojure.lang.IPersistentMap
                       clojure.lang.IPersistentSet
+                      ;;clojure.lang.PersistentHashSet ;; temp for meander
                       clojure.lang.IPersistentVector
                       clojure.lang.IRecord
+                      clojure.lang.IRef
                       clojure.lang.ISeq
+                      clojure.lang.Iterate
+                      clojure.lang.LazySeq
                       clojure.lang.Named
                       clojure.lang.Keyword
+                      clojure.lang.Repeat
                       clojure.lang.Symbol
-                      clojure.lang.Sequential]
+                      clojure.lang.Sequential
+                      clojure.lang.Seqable
+                      java.util.List]
     :custom ~custom-map})
 
 (defmacro gen-class-map []
@@ -196,6 +220,8 @@
            (fn [v]
              (cond (instance? java.lang.Process v)
                    java.lang.Process
+                   (instance? java.lang.ProcessHandle v)
+                   java.lang.ProcessHandle
                    ;; added for calling .put on .environment from ProcessBuilder
                    (instance? java.util.Map v)
                    java.util.Map
@@ -215,6 +241,8 @@
                    (instance? java.nio.file.FileSystem v)
                    java.nio.file.FileSystem
                    (instance? java.nio.file.PathMatcher v)
-                   java.nio.file.PathMatcher)))))
+                   java.nio.file.PathMatcher
+                   (instance? java.util.stream.BaseStream v)
+                   java.util.stream.BaseStream)))))
 
 (def class-map (gen-class-map))

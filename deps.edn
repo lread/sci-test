@@ -1,7 +1,6 @@
 {:paths ["src"]
- :deps {borkdude/sci {:mvn/version "0.1.1-alpha.9"}
-        #_{:git/url "https://github.com/lread/sci.git"
-                      :sha "b1ab8290291e41f99fc236e76f5d6a3ba447547e"} ;; includes a fix for :line nil metadata
+ :deps {borkdude/sci {:mvn/version "0.2.0"}
+        borkdude/graal.locking {:mvn/version "0.0.2"}
         cheshire/cheshire {:mvn/version "5.10.0"} ;; for reflection.json generation only - can be excluded otherwise
-        org.clojure/tools.namespace {:mvn/version "1.0.0"}
-        org.clojure/test.check {:mvn/version "1.0.0"}}}
+        org.clojure/tools.namespace {:mvn/version "1.1.0"}
+        org.clojure/test.check {:mvn/version "1.1.0"}}}

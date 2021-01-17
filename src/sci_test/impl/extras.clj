@@ -1,5 +1,5 @@
 (ns sci-test.impl.extras
-  "a mishmash of namespaces need for unit tests"
+  "a mishmash of namespaces need for rewrite-cljc unit tests"
   (:require    [clojure.java.io :as io]
    [clojure.tools.reader :as tr]
    [clojure.tools.namespace.find :as ns-find]
