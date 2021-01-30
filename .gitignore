@@ -1,7 +1,10 @@
 .DS_Store
-.nrepl-port
-.cpcache
-target
-classes
-reflection.json
-testing123
+/.nrepl-port
+/.cpcache
+/.clj-kondo/.cache
+/.clj-kondo/cache
+/.lsp
+/target
+/classes
+/reflection.json
+/testing123
