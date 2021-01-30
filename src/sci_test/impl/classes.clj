@@ -173,7 +173,6 @@
                    java.io.EOFException
                    java.io.PrintWriter
                    java.io.PushbackReader]
-    :methods [borkdude.graal.LockFix] ;; support for locking
 
     :fields [clojure.lang.PersistentQueue]
     :instance-checks [clojure.lang.Cons

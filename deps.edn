@@ -1,6 +1,5 @@
 {:paths ["src"]
  :deps {borkdude/sci {:mvn/version "0.2.1"}
-        borkdude/graal.locking {:mvn/version "0.0.2"}
         cheshire/cheshire {:mvn/version "5.10.0"} ;; for reflection.json generation only - can be excluded otherwise
         org.clojure/tools.namespace {:mvn/version "1.1.0"}
         org.clojure/test.check {:mvn/version "1.1.0"}}}

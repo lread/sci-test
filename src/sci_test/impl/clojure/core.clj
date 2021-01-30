@@ -4,13 +4,9 @@
   {:no-doc true}
   (:refer-clojure :exclude [future read+string])
   (:require [sci-test.impl.common :as common]
-            [borkdude.graal.locking :as locking]
             [clojure.string :as str]
             [sci.core :as sci]
-            [sci.impl.namespaces :refer [copy-core-var]]))
-
-(defn locking* [form bindings v f & args]
-  (apply @#'locking/locking form bindings v f args))
+            [sci.impl.namespaces :refer [copy-core-var macrofy]]))
 
 (defn time*
   "Evaluates expr and prints the time it took.  Returns the value of
@@ -48,7 +44,7 @@
    'send-off (copy-core-var send-off)
    'promise (copy-core-var promise)
    'deliver (copy-core-var deliver)
-   'locking (with-meta locking* {:sci/macro true})
+   'locking (macrofy @#'locking)
    'shutdown-agents (copy-core-var shutdown-agents)
    'slurp (copy-core-var slurp)
    'spit (copy-core-var spit)
