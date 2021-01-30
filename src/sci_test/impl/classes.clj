@@ -3,6 +3,13 @@
 (ns sci-test.impl.classes
   {:no-doc true})
 
+(defn on-jdk11-plus? []
+  (let [major (->> (System/getProperty "java.version")
+                   (re-matches #"^(\d+)\..*")
+                   last
+                   Long/parseLong)]
+    (>= major 11)))
+
 (def custom-map
   (cond->
       `{clojure.lang.LineNumberingPushbackReader {:allPublicConstructors true
@@ -70,7 +77,12 @@
                    {:name "toString"}
                    {:name "toURI"}]}
         java.util.Arrays
-        {:methods [{:name "copyOf"}]}}))
+        {:methods [{:name "copyOf"}]}}
+
+        ;; added by Lee
+        (on-jdk11-plus?)
+        (assoc `java.lang.reflect.AccessibleObject
+               {:methods [{:name "canAccess"}]})))
 
 (def classes
   `{:all [clojure.lang.ArityException
