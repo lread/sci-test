@@ -14,7 +14,7 @@
    sci-test.impl.test-runner
    sci-test.impl.extras
 
-   lib-under-sci-test)
+   lib-under-sci-test.defs)
   (:gen-class))
 
 (def cp-state (atom nil))
@@ -41,7 +41,7 @@
 
    ;; TODO: probably better to find through some discovery
    ;; this source is generated/hand-coded by you and exposes your lib API to sci so that tests may run
-   lib-under-sci-test/namespaces))
+   lib-under-sci-test.defs/namespaces))
 
 ;; copied from babashka
 (def imports
