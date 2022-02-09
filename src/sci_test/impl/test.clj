@@ -2,14 +2,17 @@
 
 (ns sci-test.impl.test
   (:require [sci-test.impl.clojure.test :as t]
-            [sci-test.impl.common :refer [ctx]]))
-
-(defn macrofy [v]
-  (with-meta v {:sci/macro true}))
+            [sci-test.impl.common :refer [ctx]]
+            [sci.core :as sci]))
 
 (defn contextualize [f]
   (fn [& args]
     (apply f @ctx args)))
+
+(def tns t/tns)
+
+(defn new-var [var-sym f]
+  (sci/new-var var-sym f {:ns tns}))
 
 (def clojure-test-namespace
   {'*load-tests* t/load-tests
@@ -21,39 +24,38 @@
    '*test-out* t/test-out
    ;; 'with-test-out (macrofy @#'t/with-test-out)
    ;; 'file-position t/file-position
-   'testing-vars-str t/testing-vars-str
-   'testing-contexts-str t/testing-contexts-str
-   'inc-report-counter t/inc-report-counter
+   'testing-vars-str (sci/copy-var t/testing-vars-str tns)
+   'testing-contexts-str (sci/copy-var t/testing-contexts-str tns)
+   'inc-report-counter (sci/copy-var t/inc-report-counter tns)
    'report t/report
-   'do-report t/do-report
+   'do-report (sci/copy-var t/do-report tns)
    ;; assertion utilities
-   'function? t/function?
-   'assert-predicate t/assert-predicate
-   'assert-any t/assert-any
+   'function? (sci/copy-var t/function? tns)
+   'assert-predicate (sci/copy-var t/assert-predicate tns)
+   'assert-any (sci/copy-var t/assert-any tns)
    ;; assertion methods
-   'assert-expr t/assert-expr
-   'try-expr (with-meta @#'t/try-expr
-               {:sci/macro true})
+   'assert-expr (sci/copy-var t/assert-expr tns)
+   'try-expr (sci/copy-var t/try-expr tns)
    ;; assertion macros
-   'is (with-meta @#'t/is
-         {:sci/macro true})
-   'are (macrofy @#'t/are)
-   'testing (macrofy @#'t/testing)
+   'is (sci/copy-var t/is tns)
+   'are (sci/copy-var t/are tns)
+   'testing (sci/copy-var t/testing tns)
    ;; defining tests
-   'with-test (macrofy @#'t/with-test)
-   'deftest (macrofy @#'t/deftest)
-   'deftest- (macrofy @#'t/deftest-)
-   'set-test (macrofy @#'t/set-test)
+   'with-test (sci/copy-var t/with-test tns)
+   'deftest (sci/copy-var t/deftest tns)
+   'deftest- (sci/copy-var t/deftest- tns)
+   'set-test (sci/copy-var t/set-test tns)
    ;; fixtures
-   'use-fixtures t/use-fixtures
-   'compose-fixtures t/compose-fixtures
-   'join-fixtures t/join-fixtures
+   'use-fixtures (sci/copy-var t/use-fixtures tns)
+   'compose-fixtures (sci/copy-var t/compose-fixtures tns)
+   'join-fixtures (sci/copy-var t/join-fixtures tns)
    ;; running tests: low level
    'test-var t/test-var
-   'test-vars t/test-vars
-   'test-all-vars (contextualize t/test-all-vars)
-   'test-ns (contextualize t/test-ns)
+   'test-vars (sci/copy-var t/test-vars tns)
+   'test-all-vars (new-var 'test-all-vars (contextualize t/test-all-vars))
+   'test-ns (new-var 'test-ns (contextualize t/test-ns))
    ;; running tests: high level
-   'run-tests (contextualize t/run-tests)
+   'run-tests (new-var 'run-tests (contextualize t/run-tests))
    'run-all-tests (contextualize t/run-all-tests)
-   'successful? t/successful?})
+   'successful? (sci/copy-var  t/successful? tns)
+   'with-test-out (sci/copy-var t/with-test-out tns)})

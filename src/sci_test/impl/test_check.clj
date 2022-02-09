@@ -11,9 +11,6 @@
 (def clj-check-ns (sci/create-ns 'clojure.test.check.clojure-test))
 (def check-ns (sci/create-ns 'clojure.test.check))
 
-(defn macrofy [v]
-  (with-meta v {:sci/macro true}))
-
 (def namespaces
   {'clojure.test.check.generators
    {'vector (sci/copy-var gen/vector gen-ns)
