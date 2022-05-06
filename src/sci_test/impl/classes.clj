@@ -254,3 +254,38 @@
                    java.util.stream.BaseStream)))))
 
 (def class-map (gen-class-map))
+
+;; copied from babashka
+(def imports
+  '{ArithmeticException java.lang.ArithmeticException
+    AssertionError java.lang.AssertionError
+    BigDecimal java.math.BigDecimal
+    BigInteger java.math.BigInteger
+    Boolean java.lang.Boolean
+    Byte java.lang.Byte
+    Character java.lang.Character
+    Class java.lang.Class
+    ClassNotFoundException java.lang.ClassNotFoundException
+    Comparable java.lang.Comparable
+    Double java.lang.Double
+    Exception java.lang.Exception
+    IllegalArgumentException java.lang.IllegalArgumentException
+    IndexOutOfBoundsException java.lang.IndexOutOfBoundsException
+    Integer java.lang.Integer
+    File java.io.File
+    Float java.lang.Float
+    Long java.lang.Long
+    Math java.lang.Math
+    Number java.lang.Number
+    NumberFormatException java.lang.NumberFormatException
+    Object java.lang.Object
+    Runtime java.lang.Runtime
+    RuntimeException java.lang.RuntimeException
+    Process        java.lang.Process
+    ProcessBuilder java.lang.ProcessBuilder
+    Short java.lang.Short
+    String java.lang.String
+    StringBuilder java.lang.StringBuilder
+    System java.lang.System
+    Thread java.lang.Thread
+    Throwable java.lang.Throwable})

@@ -17,23 +17,11 @@
    lib-under-sci-test.defs)
   (:gen-class))
 
-(def cp-state (atom nil))
-
-(defn add-classpath* [add-to-cp]
-  (swap! cp-state
-         (fn [{:keys [:cp]}]
-           (let [new-cp
-                 (if-not cp add-to-cp
-                         (str cp (System/getProperty "path.separator") add-to-cp))]
-             {:loader (cp/loader new-cp)
-              :cp new-cp})))
-  nil)
-
 (def namespaces
   (merge
    {'clojure.test sci-test.impl.test/clojure-test-namespace
     'clojure.core core-extras
-    'babashka.classpath {'add-classpath add-classpath*}}
+    'babashka.classpath {'add-classpath cp/classpath-namespace}}
 
    sci-test.impl.test-check/namespaces
    sci-test.impl.test-runner/namespaces
@@ -42,41 +30,6 @@
    ;; TODO: probably better to find through some discovery
    ;; this source is generated/hand-coded by you and exposes your lib API to sci so that tests may run
    lib-under-sci-test.defs/namespaces))
-
-;; copied from babashka
-(def imports
-  '{ArithmeticException java.lang.ArithmeticException
-    AssertionError java.lang.AssertionError
-    BigDecimal java.math.BigDecimal
-    BigInteger java.math.BigInteger
-    Boolean java.lang.Boolean
-    Byte java.lang.Byte
-    Character java.lang.Character
-    Class java.lang.Class
-    ClassNotFoundException java.lang.ClassNotFoundException
-    Comparable java.lang.Comparable
-    Double java.lang.Double
-    Exception java.lang.Exception
-    IllegalArgumentException java.lang.IllegalArgumentException
-    IndexOutOfBoundsException java.lang.IndexOutOfBoundsException
-    Integer java.lang.Integer
-    File java.io.File
-    Float java.lang.Float
-    Long java.lang.Long
-    Math java.lang.Math
-    Number java.lang.Number
-    NumberFormatException java.lang.NumberFormatException
-    Object java.lang.Object
-    Runtime java.lang.Runtime
-    RuntimeException java.lang.RuntimeException
-    Process        java.lang.Process
-    ProcessBuilder java.lang.ProcessBuilder
-    Short java.lang.Short
-    String java.lang.String
-    StringBuilder java.lang.StringBuilder
-    System java.lang.System
-    Thread java.lang.Thread
-    Throwable java.lang.Throwable})
 
 (defn parse-args [args]
   (let [opts (loop [args args
@@ -111,14 +64,14 @@
             (usage-help)
             (System/exit 1))
         load-fn (fn [{:keys [:namespace]}]
-                  (when-let [{:keys [:loader]} @cp-state]
+                  (when-let [{:keys [:loader]} @cp/cp-state]
                     (cp/source-for-namespace loader namespace nil)))
-        _ (when classpath (add-classpath* classpath))
+        _ (when classpath (cp/add-classpath classpath))
         opts {:namespaces namespaces
               :env (atom {})
               :features #{:sci-test :clj}
               :classes classes/class-map
-              :imports imports
+              :imports classes/imports
               :load-fn load-fn}
         opts (addons/future opts)
         sci-ctx (sci/init opts)
