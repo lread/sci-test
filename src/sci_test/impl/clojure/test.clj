@@ -275,13 +275,13 @@
 
 (def testing-contexts (sci/new-dynamic-var '*testing-contexts* (list) {:ns tns})) ; bound to hierarchy of "testing" strings
 
-(def test-out (sci/new-dynamic-var '*test-out* sci/out {:ns tns}))         ; PrintWriter for test reporting output
+(def test-out (sci/new-dynamic-var '*test-out* *out* {:ns tns}))         ; PrintWriter for test reporting output
 
 (defmacro with-test-out-internal
   "Runs body with *out* bound to the value of *test-out*."
   {:added "1.1"}
   [& body]
-  `(sci/binding [sci/out @test-out]
+  `(binding [*out* @test-out]
      ~@body))
 
 (defmacro with-test-out
@@ -334,7 +334,7 @@
     :added "1.1"}
   report-impl :type)
 
-(def report (sci/copy-var report-impl tns))
+(def report (sci/copy-var report-impl tns {:name 'report}))
 
 (defn do-report
   "Add file and line information to a test result and call report.
@@ -411,7 +411,7 @@
   [x]
   (if (symbol? x)
     (when-let [v (second (resolve/lookup @ctx x false))]
-      (when-let [value (if (vars/var? v)
+      (when-let [value (if (instance? sci.lang.Var v)
                          (get-possibly-unbound-var v)
                          v)]
         (and (fn? value)
@@ -669,7 +669,7 @@
   value of key."
   {:added "1.1"}
   [key coll]
-  (swap! ns->fixtures assoc-in [(sci-namespaces/sci-ns-name @vars/current-ns) key] coll))
+  (swap! ns->fixtures assoc-in [(sci-namespaces/sci-ns-name @sci/ns) key] coll))
 
 (defmulti use-fixtures
   "Wrap test runs in a fixture function to perform setup and
@@ -724,7 +724,7 @@
                          :expected nil, :actual e})))
       (do-report {:type :end-test-var, :var v}))))
 
-(def test-var (sci/copy-var test-var-impl tns))
+(def test-var (sci/copy-var test-var-impl tns {:name 'test-var}))
 
 (defn test-vars
   "Groups vars by their namespace and runs test-vars on them with
@@ -781,7 +781,7 @@
   Defaults to current namespace if none given.  Returns a map
   summarizing test results."
   {:added "1.1"}
-  ([ctx] (run-tests ctx @vars/current-ns))
+  ([ctx] (run-tests ctx @sci/ns))
   ([ctx & namespaces]
    (let [summary (assoc (apply merge-with + (map #(test-ns ctx %) namespaces))
                         :type :summary)]
