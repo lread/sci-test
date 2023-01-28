@@ -1,6 +1,6 @@
-;; copied from babashka.impl.common
+;; portions copied from babashka.impl.common
 
-(ns sci-test.impl.common)
+(ns sci-test.impl.common
+  (:require [sci.ctx-store :as ctx-store]))
 
-;; placeholder for ctx
-(def ctx (volatile! nil))
+(defn ctx [] (ctx-store/get-ctx))

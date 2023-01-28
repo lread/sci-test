@@ -2,8 +2,9 @@
   (:require [sci-test.impl.clojure.test :as t]
             [sci.core :as sci]))
 
+;; TODO: Can I not use sci internals here? It is a bit confusing and can be brittle
 (defn- test-ns-vars [[ns-obj ns-vars]]
-  (sci/binding [t/report-counters (atom @t/initial-report-counters)]
+  (sci/binding [t/report-counters (ref @t/initial-report-counters)]
     (t/do-report {:type :begin-test-ns, :ns ns-obj})
     (t/test-vars ns-vars)
     (t/do-report {:type :end-test-ns, :ns ns-obj})

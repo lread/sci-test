@@ -1,4 +1,4 @@
-;; copied from babashka.impl.clojure.core
+;; portions copied from babashka.impl.clojure.core
 
 (ns sci-test.impl.clojure.core
   {:no-doc true}
@@ -6,7 +6,7 @@
   (:require [sci-test.impl.common :as common]
             [clojure.string :as str]
             [sci.core :as sci]
-            [sci.impl.namespaces :refer [copy-core-var macrofy]]))
+            [sci.impl.copy-vars :refer [copy-core-var]]))
 
 (defn time*
   "Evaluates expr and prints the time it took.  Returns the value of
@@ -44,7 +44,6 @@
    'send-off (copy-core-var send-off)
    'promise (copy-core-var promise)
    'deliver (copy-core-var deliver)
-   'locking (macrofy @#'locking)
    'shutdown-agents (copy-core-var shutdown-agents)
    'slurp (copy-core-var slurp)
    'spit (copy-core-var spit)
@@ -57,4 +56,4 @@
    'default-data-readers default-data-readers
    'xml-seq (copy-core-var xml-seq)
    'read+string (fn [& args]
-                  (apply read+string @common/ctx args))})
+                  (apply read+string (common/ctx) args))})

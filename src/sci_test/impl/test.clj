@@ -7,7 +7,7 @@
 
 (defn contextualize [f]
   (fn [& args]
-    (apply f @ctx args)))
+    (apply f (ctx) args)))
 
 (def tns t/tns)
 
@@ -15,7 +15,8 @@
   (sci/new-var var-sym f {:ns tns}))
 
 (def clojure-test-namespace
-  {'*load-tests* t/load-tests
+  {:obj tns
+   '*load-tests* t/load-tests
    '*stack-trace-depth* t/stack-trace-depth
    '*report-counters* t/report-counters
    '*initial-report-counters* t/initial-report-counters
@@ -56,6 +57,8 @@
    'test-ns (new-var 'test-ns (contextualize t/test-ns))
    ;; running tests: high level
    'run-tests (new-var 'run-tests (contextualize t/run-tests))
-   'run-all-tests (contextualize t/run-all-tests)
-   'successful? (sci/copy-var  t/successful? tns)
+   'run-test-var (sci/copy-var t/run-test-var tns)
+   'run-test (sci/copy-var t/run-test tns)
+   'run-all-tests (new-var 'run-all-tests (contextualize t/run-all-tests))
+   'successful? (sci/copy-var t/successful? tns)
    'with-test-out (sci/copy-var t/with-test-out tns)})

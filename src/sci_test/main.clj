@@ -8,7 +8,7 @@
    [sci-test.impl.common :as common]
    [sci.addons :as addons]
    [sci.core :as sci]
-
+   [sci.ctx-store :as ctx-store]
    sci-test.impl.test
    sci-test.impl.test-check
    sci-test.impl.test-runner
@@ -75,7 +75,7 @@
               :load-fn load-fn}
         opts (addons/future opts)
         sci-ctx (sci/init opts)
-        _ (vreset! common/ctx sci-ctx)]
+        _ (ctx-store/reset-ctx! sci-ctx)]
     (sci/binding [sci/out *out*
                   sci/err *err*]
       (sci/eval-string* sci-ctx (slurp file)))))
