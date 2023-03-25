@@ -1,5 +1,5 @@
 {:paths ["src"]
- :deps {org.babashka/sci {:mvn/version "0.7.38"}
+ :deps {org.babashka/sci {:mvn/version "0.7.39"}
         cheshire/cheshire {:mvn/version "5.11.0"} ;; for reflection.json generation only - can be excluded otherwise
-        org.clojure/tools.namespace {:mvn/version "1.4.1"}
+        org.clojure/tools.namespace {:mvn/version "1.4.4"}
         org.clojure/test.check {:mvn/version "1.1.1"}}}
