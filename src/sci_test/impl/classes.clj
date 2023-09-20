@@ -5,7 +5,7 @@
 
 (defn on-jdk11-plus? []
   (let [major (->> (System/getProperty "java.version")
-                   (re-matches #"^(\d+)\..*")
+                   (re-matches #"^(\d+).*")
                    last
                    Long/parseLong)]
     (>= major 11)))
