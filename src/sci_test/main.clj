@@ -9,6 +9,7 @@
    [sci.addons :as addons]
    [sci.core :as sci]
    [sci.ctx-store :as ctx-store]
+   sci-test.impl.clojure.java.shell
    sci-test.impl.test
    sci-test.impl.test-check
    sci-test.impl.test-runner
@@ -21,6 +22,7 @@
   (merge
    {'clojure.test sci-test.impl.test/clojure-test-namespace
     'clojure.core core-extras
+    'clojure.java.shell sci-test.impl.clojure.java.shell/shell-namespace
     'babashka.classpath {'add-classpath cp/classpath-namespace}}
 
    sci-test.impl.test-check/namespaces
