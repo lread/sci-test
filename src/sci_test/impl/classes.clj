@@ -180,8 +180,8 @@
           java.util.zip.GZIPOutputStream
           java.util.zip.ZipInputStream
           java.util.zip.ZipEntry
-          java.lang.management.ManagementFactory
-          sun.management.RuntimeImpl
+          java.lang.ProcessHandle
+          java.lang.ProcessHandleImpl
           ~(symbol "[B")]
     :constructors [clojure.lang.Delay
                    clojure.lang.MapEntry
